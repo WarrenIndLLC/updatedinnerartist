@@ -1,0 +1,60 @@
+
+<style type="text/css">
+    .size-material-frame-form > a {
+        background: #e3661f none repeat scroll 0 0;
+        border-radius: 3px;
+        color: #fff;
+        font-family: lato;
+        font-size: 18px;
+        font-weight: 700;
+        padding: 8px 30px;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+</style>
+<div class="col-lg-6">
+    <div class="single-product-details">
+        <h1>{{singleProduct.title}}</h1>
+        <h3>${{singleProduct.price}} / Base Cost</h3>
+        <p>{{singleProduct.custom_description}}</p>                   
+    </div>
+    <div class="size-material-frame-form">
+        <form>
+          <div class="form-group row">
+            <label class="col-sm-3 col-xs-3 col-form-label" for="colFormLabelSm">Size</label>
+            <div class="col-sm-9 col-xs-9">
+                <select id="sel1" class="form-control">
+                    <option>Choose an option</option>
+                    <option>Option One</option>
+                </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-xs-3 col-form-label" for="colFormLabelSm">Material</label>
+            <div class="col-sm-9 col-xs-9">
+                <select id="sel1" class="form-control">
+                    <option>Choose an option</option>
+                    <option>Option One</option>
+                </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-xs-3 col-form-label" for="colFormLabelSm">Frame Option</label>
+            <div class="col-sm-9 col-xs-9">
+                <select id="sel1" class="form-control">
+                    <option>Choose an option</option>
+                    <option>Option One</option>
+                </select>
+            </div>
+          </div>
+
+        </form>
+        <div ng-click="addCart(artworkDetails.id)">
+            <a data-fancybox data-src="#artAdd" href="javascript:;" class="btn" ng-if="cartItem.length==0">find artwork</a>
+            <a data-fancybox data-src="#artAdd" href="javascript:;" class="btn" ng-if="!cartItem.length==0">Place Art</a>
+            <!-- <a href class="btn" ng-if="singleProduct.addedTOCart" disabled>Add to Cart</a> -->
+            <a href class="btn" ng-click="productAddToCart(singleProduct);" ng-if="!singleProduct.addedTOCart" >Add to Cart</a>
+        </div>
+        
+    </div>
+</div>

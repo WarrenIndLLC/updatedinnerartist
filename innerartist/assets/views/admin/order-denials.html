@@ -1,0 +1,152 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.table_content{
+    text-align: right;float: right;margin: 0;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <!-- <md-button class="md-primary md-raised" ng-click="showUserModal(null, $event)">{{:: 'add' | translate }}</md-button> -->
+        </div>
+        <div class="controls">
+            <div class="search">
+                <input placeholder="{{:: 'search' | translate }}" type="text" ng-model="search.query">
+                <i class="icon icon-search"></i>
+            </div>
+            <md-button class="md-primary md-raised" ng-click="clearSearch()">Clear</md-button>
+        </div>
+    </div>
+    <div class="table table-hover">
+        <div class="table-row table-head">
+            <div class="table-col image">{{:: 'Order #' | translate }}</div>
+            <div class="table-col">{{:: 'Customer Name' | translate }}</div>
+            <div class="table-col">{{:: 'Customer Email' | translate }}</div>
+            <div class="table-col">{{:: 'Billing Address' | translate }}</div>
+            <div class="table-col">{{:: 'Shipping Address' | translate }}</div>
+            <div class="table-col">{{:: 'Action' | translate }}</div>
+        </div>
+
+        <div class="table-body">
+            <div class="table-row" dir-paginate="order in orders | filter: search.query | itemsPerPage: itemsPerPage" current-page="currentPage" ng-class="{ selected: isItemSelected(user) }" ng-click="select(user)">
+                <div class="table-col image">{{order.id}}</div>
+                <div class="table-col">{{ order.first_name || '-' }} {{order.last_name}}</div>
+                <div class="table-col">{{ order.email || '-' }}</div>
+                <div class="table-col">{{order.billing_street_1}} , {{order.billing_city}} <br><b>{{order.billing_state}}</b><br><b>{{order.billing_country}}</b></div>
+                <div class="table-col">{{order.shipping_street_1}} , {{order.shipping_city}} <br><b>{{order.shipping_state}}</b><br><b>{{order.shipping_country}}</b></div>
+                <div class="table-col align-right">
+                    <md-button class="md-primary md-raised" ng-click="showOrderDetails(order, $event)">Order Details</md-button>
+                    <md-button class="md-primary md-raised" ng-click="showViewCart(order, $event)">View Cart</md-button>
+                    <md-button class="md-primary md-raised" ng-click="reasonForDenial(order, $event)">Reason For Denial</md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+
+<script type="text/ng-template" id="assets/views/modals/order-details.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>Order Details</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form>
+            <md-input-container>
+                <div>
+                    <span>{{:: 'Title of API Product Purchased Here' | translate }}</span>
+                    <h5 class="table_content" style="text-align: right;">1X$3.00</h5>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <div>
+                    <span>{{:: 'Subtotal' | translate }}</span>
+                    <h5 class="table_content" style="text-align: right;">$3.00</h5>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <div>
+                    <span>{{:: 'Shipping' | translate }}</span>
+                    <h5 class="table_content" style="text-align: right;">$3.00</h5>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <div>
+                    <span>{{:: 'Total' | translate }}</span>
+                    <h5 class="table_content" style="text-align: right;">$3.00</h5>
+                </div>
+            </md-input-container>
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <!-- <md-button type="submit" class="md-primary md-raised" translate>{{ type }}</md-button> -->
+            </div>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/view-cart.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'VIEW CART' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form>
+            <md-input-container>
+                <div>
+                    <img src="/assets/images/avatar.png" style="width: 250px;height: 250px;">
+                </div>
+            </md-input-container>
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <!-- <md-button type="submit" class="md-primary md-raised" translate>{{ type }}</md-button> -->
+            </div>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/order-denial-reasons.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Order Denial Reasons' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form ng-submit="submit()">
+            <md-input-container>
+                <div>
+                    <h5  style="text-align:center;">There is the reasons to deny your order</h5>
+                </div>
+            </md-input-container>
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'No' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>

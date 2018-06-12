@@ -1,0 +1,88 @@
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 300px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+.align-center{
+    text-align: center;
+}
+</style>
+<div class="material-table" ng-controller="UserOrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table_content table-hover">
+        <div class="dashboard-penal">
+            <div class="dashboard-container">
+                <div class="table table-hover">
+                    <div class="table-row table-head">
+                        <div class="table-col">{{:: 'Order' | translate }}</div>
+                        <div class="table-col">{{:: 'Date' | translate }}</div>
+                        <div class="table-col">{{:: 'Status' | translate }}</div>
+                        <div class="table-col">{{:: 'Total' | translate }}</div>
+                        <div class="table-col">{{:: '' | translate }}</div>
+                        <div class="table-col">{{:: 'Tracking #' | translate }}</div>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-row" ng-repeat="allOrder in userOrder"><!--  ng-click="select(user)"  -->
+                            <div class="table-col"> #{{ allOrder.id || '-'}}</div>
+                            <div class="table-col">{{ allOrder.created_at || '-'}}</div>
+                            <div class="table-col">{{ allOrder.status || '-' }}</div>
+                            <div class="table-col">{{ allOrder.quantity || '-' }}</div>
+                            <div class="table-col align-left"><md-button class="md-primary md-raised" ng-click="viewOrder(allOrder)">View Order</md-button></div>
+                            <div class="table-col">{{ user.gender || '-' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular> -->
+</div>
+<script type="text/ng-template" id="assets/views/modals/view-order.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1 class="align-center">{{:: 'VIEW CART' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form>
+            <md-input-container>
+                <div>
+                    <img class="align-center" src="{{viewYourOrder.top_layer_image}}" style="width: 250px;height: 250px;">
+                </div>
+            </md-input-container>
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <!-- <md-button type="submit" class="md-primary md-raised" translate>{{ type }}</md-button> -->
+            </div>
+        </form>
+    </md-dialog>
+</script>

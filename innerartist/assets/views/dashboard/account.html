@@ -1,0 +1,52 @@
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table_content table-hover">
+        <div class="dashboard-penal">
+            <div class="dashboard-title"><h2>Account Details</h2></div>
+            <div class="dashboard-container">
+                <form method="post" ng-submit="submit()">
+
+                    <div class="errors"></div>
+                    <md-input-container>
+                        <label for="first_name">{{:: 'Your first name' | translate }}</label>
+                        <input id="first_name" type="text" name="first_name" ng-model="account.first_name">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="last_name">{{:: 'Your last name' | translate }}</label>
+                        <input id="last_name" type="text" name="last_name" ng-model="account.last_name">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="email">{{:: 'Your email address' | translate }}</label>
+                        <input id="email" type="email" name="email" ng-model="account.email" >
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="address">{{:: 'Your address' | translate }}</label>
+                        <input id="address" type="text" name="address" ng-model="account.address">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="password">{{:: 'Password' | translate }}</label>
+                        <input id="password" type="text" name="password" ng-model="account.password">
+                    </md-input-container>
+
+                    <!-- <md-input-container>
+                        <label for="username">{{:: 'Confirm Password' | translate }}</label>
+                        <input id="username" type="text" ng-model="account.username">
+                    </md-input-container> -->
+                    <div class="buttons">
+                        <md-button type="submit" class="md-primary md-raised" translate>Update Profile</md-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+</div>

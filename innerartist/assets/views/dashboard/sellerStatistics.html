@@ -1,0 +1,47 @@
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+<script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+</style>
+
+<div class="material-table" ng-controller="ordercontroller" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table_content table-hover">
+        <div class="dashboard-penal">
+            <div class="dashboard-title"><h2>Seller Statistics</h2></div>
+            <div class="dashboard-container">
+                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
+                    <!-- <img src="assets/images/statistic.png">  -->
+                </div>
+                <div class="table table-hover" style="margin-top: 20px;">
+                    <div class="table-row table-head">
+                        <div class="table-col">{{:: 'Period' | translate }}</div>
+                        <div class="table-col">{{:: 'Date Sent' | translate }}</div>
+                        <div class="table-col">{{:: 'Status' | translate }}</div>
+                        <div class="table-col">{{:: 'Amount' | translate }}</div>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-row" ><!--  ng-click="select(user)"  -->
+                            <div class="table-col"> 1/1/1-1/31/17</div>
+                            <div class="table-col">2/15/17</div>
+                            <div class="table-col">PAID</div>
+                            <div class="table-col">$175.17</div>
+                        </div>
+                    </div>
+                </div>                  
+            </div>
+        </div>
+    </div>
+</div>

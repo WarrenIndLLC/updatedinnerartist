@@ -1,0 +1,157 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.box-boddy {
+    padding: 15px;
+}
+.box-header {
+    border-bottom: 1px solid #ccc;
+    padding-left: 15px;
+    padding-bottom: 7px;
+}
+.box {
+    width: 100%;
+    float: left;
+    padding: 15px 0;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table-hover">
+        <div class="table table_content table-hover">
+            <div class="dashboard-penal">
+                <div class="dashboard-container">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-md-10 col-xs-12 col-sm-10">
+                                <input type="text" class="form-control" placeholder="eg. Search Username" ng-model="search.query">    
+                            </div>
+                            <div class="col-md-2 col-xs-12 col-sm-2">
+                                <!-- <div class="col-md-6"><md-button type="submit" class="md-primary md-raised" translate>Search</md-button></div> -->
+                                <div class="col-md-6"><md-button type="submit" class="md-primary md-raised" ng-click="clearSearch()">Clear</md-button></div>
+                            </div>
+                        </div>  
+                    </div>  
+                    <div class="col-md-12" style="margin-top: 10px;">
+                        <div class="row">
+                            <div class="col-md-6" dir-paginate="vendor in vendorApproval|itemsPerPage:20| filter:search.query" ng-show="vendor">
+                                <div class="box" >
+                                    <div class="box-header"><b>Username</b> :{{vendor.first_name}} {{vendor.last_name}}</div>
+                                    <div class="box-boddy">
+                                        <div class="col-md-4"><md-button type="submit" class="md-primary md-raised" ng-click="showUserInfo(order, $event, vendor)">Userinfo</md-button></div>
+                                        <div class="col-md-4"><md-button type="submit" class="md-primary md-raised" ng-click="showApprove(order, $event, vendor)">Approve</md-button></div>
+                                        <div class="col-md-4"><md-button type="submit" class="md-primary md-raised" ng-click="showDeny(order, $event, vendor)">Deny</md-button></div>
+                                    </div>
+                                </div>
+                                <!-- <div class="box" >
+                                    <div class="box-header"><b>Username</b> :Pradosh Soni</div>
+                                    <div class="box-boddy">
+                                        <div class="col-md-4"><md-button type="submit" class="md-primary md-raised" translate>Userinfo</md-button></div>
+                                        <div class="col-md-4"><md-button type="submit" class="md-primary md-raised" translate>Approve</md-button></div>
+                                        <div class="col-md-4"><md-button type="submit" class="md-primary md-raised" translate>Deny</md-button></div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>                                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+<script type="text/ng-template" id="assets/views/modals/user-info.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'User Info' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>  
+        <h5>User Name : </h5><p>{{statusApproval.first_name}} {{statusApproval.last_name}}</p>
+        <h5>Email: </h5> <p>{{statusApproval.email}}</p>
+        <h5>Address:</h5> <p>{{statusApproval.address}}</p>
+        <h5>Approval Status:</h5> <p ng-if="statusApproval.approval_status==0">Vendor Approval is Pending</p>
+
+        <div class="buttons">
+            <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+            <!-- <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button> -->
+        </div>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="assets/views/modals/approve-vendor.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Approve Vendor' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="approveVendor()">
+
+                    <div class="errors"></div>
+                    <h3>Are you sure you want to approve this user to be an artist vendor?</h3>
+                    <md-input-container>
+                        <input id="approval_status" type="hidden" name="approval_status" value="1" ng-model="statusApproval.approval_status">
+                    </md-input-container>
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'No' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/deny-vendor.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Deny Vendor' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="denyVendor()">
+
+                    <div class="errors"></div>
+                    <h3>Are you sure you want to deny this user's application?</h3>
+                    <md-input-container>
+                        <input id="approval_status" type="hidden" name="approval_status" value="2" ng-model="statusDenial.approval_status">
+                    </md-input-container>
+                    <md-input-container>
+                        <label for="denial_reason">{{:: 'Reason for denial' | translate }}</label>
+                        <input id="denial_reason" type="text" name="denial_reason" rows="4" ng-model="statusDenial.denial_reason">
+                    </md-input-container>
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'No' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>

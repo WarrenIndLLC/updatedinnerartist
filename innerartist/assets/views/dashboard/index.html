@@ -1,0 +1,46 @@
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" id="admin" ng-class="{ loading: usersAjaxInProgress }" style="background-color: #efefef;border: none;">
+    <section layout="row" class="stats-row">
+        <div class="stats-container">
+            <div class="stats-icon"><i class="icon icon-users"></i></div>
+            <div class="details">
+                <div class="number">Hello </div>
+                <div class="text">{{users.getUsernameForCurrentUser('email')}}</div>
+            </div>
+        </div>
+        <div class="stats-container">
+            <div class="stats-icon"><i class="iconnew iconnew-help"></i></div>
+            <div class="details">
+                <div class="number">Need Assistance?</div>
+                <div class="text"><!-- Call cystiner services at 888-000-2244 --></div>
+            </div>
+        </div>
+        <div class="stats-container">
+            <div class="stats-icon"><i class="iconnew iconnew-at"></i></div>
+            <div class="details">
+                <div class="number">Email us at</div>
+                <div class="text">info@innerartist.com</div>
+            </div>
+        </div>
+        <div class="stats-container">
+            <div class="stats-icon"><i class="iconnew iconnew-basket-1"></i></div>
+            <div class="details">
+                <div class="number">View Cart</div>
+                <!-- <div class="text">0</div> -->
+            </div>
+        </div>
+    </section>
+    <div class="table table_content table-hover">
+        <div class="dashboard-penal">
+            <div class="dashboard-title"><h2>Dashboard</h2></div>
+            <div class="dashboard-container">
+                <p>From your account dashboard you can view your <a href="#/dashboard/order">recent orders</a>, Manage your <a href="#/dashboard/addresses">shipping and billing addresses</a> and <a href="#/dashboard/account">edit your password and account details.</a></p>
+            </div>
+        </div>
+    </div>
+</div>

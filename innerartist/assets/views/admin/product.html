@@ -1,0 +1,626 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.table_content{
+    text-align: right;float: right;margin: 0;
+}
+.align-right{
+    float: right;
+}
+.align-left{
+    float: left;
+}
+.vl {
+    border-left: 6px solid green;
+    height: 500px;
+}
+.md-modal md-modal-wide user-modal md-default-theme transition-in{
+    height: 100% !important;
+}
+.product-div{
+    border-top: 1px solid #0000001f;
+    border-bottom: 1px solid #0000001f;
+    max-height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+</style>
+<div class="material-table" ng-controller="ProductController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <!-- <div class="dropdown">
+                <md-button class="md-raised md-primary" data-toggle="dropdown">
+                    <i class="icon icon-plus"></i>
+                    {{:: 'new' | translate }}
+                    <span class="caret"></span>
+                </md-button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-click="utils.openModal('newPhoto', $event)"><a href=""><i class="icon icon-picture"></i> {{:: 'Artwork' | translate }}</a></li>
+                    <li ng-click="folders.openNewModal()"><a href=""><i class="icon icon-folder-add"></i> {{:: 'album' | translate }}</a></li>
+                    <li ng-if="isSmallScreen" ng-file-select ng-file-change="upload($files)"><a href=""><i class="icon icon-upload-cloud"></i> {{:: 'upload' | translate }}</a></li>
+                </ul>
+            </div> -->
+            <div class="dropdown">
+                <md-button class="md-raised md-primary" data-toggle="dropdown" >
+                    <i class="icon icon-plus"></i>
+                    {{:: 'new' | translate }}
+                    <span class="caret"></span>
+                </md-button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-click="showAddProduct(order, $event, allProducts)"><a href=""><i class="icon icon-picture"></i> {{:: 'Add Simple Product' | translate }}</a></li>
+                    <li ng-click="showAddCanvasProduct(order, $event, allProducts)"><a href=""><i class="icon icon-picture"></i> {{:: 'Add Canvas Variable Product' | translate }}</a></li>
+                </ul>
+            </div>
+            <md-button class="md-primary md-raised" ng-click="showEditCategory(order, $event, allProducts)" style="margin-left: 10px;">{{:: 'Edit Categories' | translate }}</md-button>
+        </div>
+        <div class="controls">
+            <div class="search">
+                <input placeholder="{{:: 'search' | translate }}" type="text" ng-model="search.query">
+                <i class="icon icon-search"></i>
+            </div>
+            <md-button class="md-primary md-raised" ng-click="clearSearch()">Clear</md-button>
+        </div>
+    </div>
+    <div class="dashboard-penal">
+        <div class="dashboard-container">
+            <div class="table table-hover">
+                <div class="user-item">
+                    <!-- <div class="col-md-3">
+                        <div class="img-wrapper">
+                            <img src="assets/images/products/35.jpg" style="width: 232px;">
+                        </div>
+                        <div class="folder-icon"><i class="icon icon-folder-open"></i></div>
+                        <div class="user-item-caption">
+                            <div class="name" style="text-align: center;">Phone</div>
+                            <div class="align-left">
+                                <p>$90.00</p>
+                                <button class="md-primary md-raised md-button md-default-theme">Unpublish</button> 
+                            </div>
+                            <div class="align-right">
+                                <p>$90.00</p>
+                                <button class="md-primary md-raised md-button md-default-theme">Edit</button>
+                            </div>
+                             <div class="size">
+                                {{ item.file_size ? utils.formatFileSize(item.file_size) : '-' }}
+                                <i  class="icon icon-star-filled"></i>
+                            </div>
+                            <div class="ago">
+                                {{ formatTime(item.updated_at) }}
+                                <div class="info" " ng-click="openRightPanel()">
+                                    <i class="icon icon-info-circled-alt"></i>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>  -->
+                    <div class="col-md-3" ng-repeat="allProducts in products" style="margin-top: 10px;">
+                        <div class="img-wrapper">
+                            <img ng-if="allProducts.bottom_layer_image" src="{{ allProducts.bottom_layer_image  }}" style="width: 232px;height: 265px;">
+                            <img ng-if="!allProducts.bottom_layer_image" src="{{ allProducts.canvas.bottom_layer_image  }}" style="width: 232px;height: 265px;">
+                        </div>
+                        <!-- <div class="folder-icon"><i class="icon icon-folder-open"></i></div> -->
+                        <div class="user-item-caption">
+                            <div class="name" style="text-align: center;">{{ allProducts.title }}</div>
+                            <div class="align-left">
+                                <p>${{allProducts.regular_price}}</p>
+                                <button class="md-primary md-raised md-button md-default-theme">Unpublish</button>
+                            </div>
+                            <div class="align-right">
+                                <p style="visibility: hidden;">$40.00</p>
+                                <md-button class="md-primary md-raised" ng-click="showEditProduct(order, $event, allProducts)">Edit</md-button>
+                                <!-- <button class="md-primary md-raised md-button md-default-theme">Edit</button> -->
+                            </div>
+                            <!-- <div class="size">
+                                {{ item.file_size ? utils.formatFileSize(item.file_size) : '-' }}
+                                <i  class="icon icon-star-filled"></i>
+                            </div>
+                            <div class="ago">
+                                {{ formatTime(item.updated_at) }}
+                                <div class="info" " ng-click="openRightPanel()">
+                                    <i class="icon icon-info-circled-alt"></i>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+<script type="text/ng-template" id="assets/views/modals/edit-product.html">
+    <md-dialog class="md-modal md-modal-wide user-modal" style="max-height: 100%;">
+        <div class="md-modal-header">
+            <h1>{{:: 'Simple Product' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="editProduct()">
+
+                    <div class="errors"></div>
+                    <div layout-gt-sm="row">
+                        <md-input-container style="width: 50%;">
+                            <md-button class="md-primary md-raised" style="margin-top: -20px;" ng-file-select ng-file-change="uploadTopImage($files)" ng-multiple="false">Top Layer</md-button>
+                        </md-input-container>
+                        <md-input-container style="width: 50%;">
+                            <md-button class="md-primary md-raised" style="margin-top: -20px;" ng-file-select ng-file-change="uploadBottomImage($files)" ng-multiple="false">Bottom Layer</md-button>
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container style="width: 50%">
+                            <label for="custom_title">{{:: 'Input Custom Title' | translate }}</label>
+                            <input id="custom_title" type="text" name="custom_title" ng-model="viewYourProduct.custom_title">
+                        </md-input-container>
+
+                        <md-input-container  style="width: 50%">
+                            <label for="title">{{:: '[default product title here]' | translate }}</label>
+                            <input id="title" type="text" name="title" ng-model="viewYourProduct.title">
+                        </md-input-container>
+                    </div>
+                    <md-input-container>
+                        <label for="custom_description">{{:: 'Input Custom Description' | translate }}</label>
+                        <input id="custom_description" type="text" name="custom_description" ng-model="viewYourProduct.custom_description">
+                    </md-input-container>
+
+                    <div layout-gt-sm="row">
+                        <!-- <h5>Art Crop Dimensions</h5> -->
+                        <md-input-container  style="width: 50%">
+                            <label for="crop_art_width">{{:: 'Width' | translate }}</label>
+                            <input id="crop_art_width" type="number" min="1" max="10000" name="crop_art_width" ng-model="viewYourProduct.crop_art_width" flex-gt-sm required>
+                        </md-input-container>
+                        <md-input-container  style="width: 50%">
+                            <label for="crop_art_height">{{:: 'Height' | translate }}</label>
+                            <input id="crop_art_height" type="number" min="1" max="10000" name="crop_art_height" ng-model="viewYourProduct.crop_art_height" flex-gt-sm required>
+                        </md-input-container>  
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <!-- <md-input-container>
+                            <label for="price">{{:: 'Cost' | translate }}</label>
+                            <input id="price" type="text" name="price" ng-model="viewYourProduct.price" flex-gt-sm>
+                        </md-input-container> -->
+                        <md-input-container>
+                            <label for="regular_price">{{:: 'Regular Price' | translate }}</label>
+                            <input id="regular_price" type="text" min="1" max="10000" name="regular_price" ng-model="viewYourProduct.regular_price" flex-gt-sm required>
+                        </md-input-container>  
+                        <md-input-container>
+                            <label for="sale_price">{{:: 'Sale Price' | translate }}</label>
+                            <input id="sale_price" type="number" min="1" name="sale_price" ng-model="viewYourProduct.sale_price" flex-gt-sm>
+                        </md-input-container>
+                        <md-input-container>
+                            <label for="sale_end_date">{{:: 'Sale End Date' | translate }}</label>
+                            <input id="sale_end_date" type="text" name="sale_end_date" ng-model="viewYourProduct.sale_end_date" flex-gt-sm>
+                        </md-input-container>  
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container>
+                            <label for="flat_rate">{{:: 'Flat Rate' | translate }}</label>
+                            <input id="flat_rate" type="number" min="1" max="10000" name="flat_rate" ng-model="viewYourProduct.flat_rate" flex-gt-sm required>
+                        </md-input-container>
+                        <md-input-container>
+                            <label for="two_days_shipping">{{:: '2 Day Shipping' | translate }}</label>
+                            <input id="two_days_shipping" type="number" min="1" max="10000" name="two_days_shipping" ng-model="viewYourProduct.two_days_shipping" flex-gt-sm required>
+                        </md-input-container>  
+                        <md-input-container>
+                            <label for="rush_delivery">{{:: 'Rush Delivery' | translate }}</label>
+                            <input id="rush_delivery" type="number" min="1" max="10000" name="rush_delivery" ng-model="viewYourProduct.rush_delivery" flex-gt-sm required>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-select placeholder="{{:: 'Choose Product Category' | translate }}" ng-model="viewYourProduct.category_id">
+                            <md-option value="{{categorys.id}}" ng-repeat="categorys in category">{{categorys.category}}</md-option>
+                        </md-select>
+
+                        <md-select placeholder="{{:: 'Vendor API for Product' | translate }}" ng-model="viewYourProduct.vendor_api_product">
+                            <md-option value="Acrylic Ideas">Acrylic Ideas</md-option>
+                            <md-option value="Galloree">Galloree</md-option>
+                            <md-option value="Graphik Dimensions">Graphik Dimensions</md-option>
+                            <md-option value="MWW">MWW</md-option>
+                        </md-select>
+                        <!-- <md-input-container>
+                            <label for="vendor_api_product">{{:: 'Vendor API for Product' | translate }}</label>
+                            <input id="vendor_api_product" type="text" name="vendor_api_product" ng-model="viewYourProduct.vendor_api_product" flex-gt-sm>
+                        </md-input-container> -->
+                        <md-input-container>
+                            <label for="vendor_sku">{{:: 'Vendor SKU' | translate }}</label>
+                            <input id="vendor_sku" type="text" name="vendor_sku" ng-model="viewYourProduct.vendor_sku" flex-gt-sm>
+                        </md-input-container>  
+                    </div>
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Save & Publish</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="assets/views/modals/add-product.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Add Simple Product' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="addProduct()">
+
+                    <div class="errors"></div>
+                    <div layout-gt-sm="row">
+                        <md-input-container style="width: 50%;">
+                            <md-button class="md-primary md-raised" style="margin-top: -20px;" ng-file-select ng-file-change="uploadTopImage($files)" ng-multiple="false">Top Layer</md-button>
+                        </md-input-container>
+                        <md-input-container style="width: 50%;">
+                            <md-button class="md-primary md-raised" style="margin-top: -20px;" ng-file-select ng-file-change="uploadBottomImage($files)" ng-multiple="false">Bottom Layer</md-button>
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container style="width: 50%;">
+                            <label for="custom_title">{{:: 'Input Custom Title' | translate }}</label>
+                            <input id="custom_title" type="text" name="custom_title" ng-model="formData.custom_title">
+                        </md-input-container>
+
+                        <md-input-container style="width: 50%;">
+                            <label for="title">{{:: '[default product title here]' | translate }}</label>
+                            <input id="title" type="text" name="title" ng-model="formData.title">
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container>
+                        <label for="custom_description">{{:: 'Input Custom Description' | translate }}</label>
+                        <input id="custom_description" type="text" name="custom_description" ng-model="formData.custom_description">
+                    </md-input-container>
+
+                    <div layout-gt-sm="row">
+                        <!-- <h5>Art Crop Dimensions</h5> -->
+                        <md-input-container>
+                            <label for="crop_art_width">{{:: 'Width' | translate }}</label>
+                            <input id="crop_art_width" type="number" min="1"  name="crop_art_width" ng-model="formData.crop_art_width" flex-gt-sm required>
+                        </md-input-container>
+                        <md-input-container>
+                            <label for="crop_art_height">{{:: 'Height' | translate }}</label>
+                            <input id="crop_art_height" type="number" min="1"  name="crop_art_height" ng-model="formData.crop_art_height" flex-gt-sm required>
+                        </md-input-container>  
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <!-- <md-input-container>
+                            <label for="price">{{:: 'Cost' | translate }}</label>
+                            <input id="price" type="text" name="price" ng-model="viewYourProduct.price" flex-gt-sm>
+                        </md-input-container> -->
+                        <md-input-container>
+                            <label for="regular_price">{{:: 'Regular Price' | translate }}</label>
+                            <input id="regular_price" type="decimal" min="1" max="10000" name="regular_price" ng-model="formData.regular_price" flex-gt-sm required>
+                        </md-input-container>  
+                        <md-input-container>
+                            <label for="sale_price">{{:: 'Sale Price' | translate }}</label>
+                            <input id="sale_price" type="number" min="1" max="10000" name="sale_price" ng-model="formData.sale_price" flex-gt-sm>
+                        </md-input-container>
+                        <md-input-container>
+                            <label for="sale_end_date">{{:: 'Sale End Date' | translate }}</label>
+                            <input id="sale_end_date" type="text" name="sale_end_date" ng-model="formData.sale_end_date" flex-gt-sm>
+                        </md-input-container>  
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container>
+                            <label for="flat_rate">{{:: 'Flat Rate' | translate }}</label>
+                            <input id="flat_rate" type="number" min="1" max="10000" name="flat_rate" ng-model="formData.flat_rate" flex-gt-sm required>
+                        </md-input-container>
+                        <md-input-container>
+                            <label for="two_days_shipping">{{:: '2 Day Shipping' | translate }}</label>
+                            <input id="two_days_shipping" type="number" min="1" max="10000" name="two_days_shipping" ng-model="formData.two_days_shipping" flex-gt-sm required>
+                        </md-input-container>  
+                        <md-input-container>
+                            <label for="rush_delivery">{{:: 'Rush Delivery' | translate }}</label>
+                            <input id="rush_delivery" type="number" min="1" max="10000" name="rush_delivery" ng-model="formData.rush_delivery" flex-gt-sm required>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-select placeholder="{{:: 'Choose Product Category' | translate }}" ng-model="formData.category_id">
+                            <md-option value="{{categorys.id}}" ng-repeat="categorys in category">{{categorys.category}}</md-option>
+                        </md-select>
+
+                        <md-select placeholder="{{:: 'Vendor API for Product' | translate }}" ng-model="formData.vendor_api_product">
+                            <md-option value="Acrylic Ideas">Acrylic Ideas</md-option>
+                            <md-option value="Galloree">Galloree</md-option>
+                            <md-option value="Graphik Dimensions">Graphik Dimensions</md-option>
+                            <md-option value="MWW">MWW</md-option>
+                        </md-select>
+                        <!-- <md-input-container>
+                            <label for="vendor_api_product">{{:: 'Vendor API for Product' | translate }}</label>
+                            <input id="vendor_api_product" type="text" name="vendor_api_product" ng-model="formData.vendor_api_product" flex-gt-sm>
+                        </md-input-container> -->
+                        <md-input-container>
+                            <label for="vendor_sku">{{:: 'Vendor SKU' | translate }}</label>
+                            <input id="vendor_sku" type="text" name="vendor_sku" ng-model="formData.vendor_sku" flex-gt-sm>
+                        </md-input-container>  
+                    </div>
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Save & Publish</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/add-canvas-product.html" style="height: 100%">
+    <md-dialog class="md-modal md-modal-wide user-modal" style="overflow-y: scroll;">
+        <div class="md-modal-header">
+            <h1>{{:: 'Add Canvas Product' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post">
+                    <div class="errors"></div>
+                    <div layout-gt-sm="row">
+                        <md-input-container style="width: 50%;">
+                            <label for="custom_title">{{:: 'Input Custom Title' | translate }}</label>
+                            <input id="custom_title" type="text" name="custom_title" ng-model="formData.custom_title">
+                        </md-input-container>
+
+                        <md-input-container style="width: 50%;">
+                            <label for="title">{{:: '[default product title here]' | translate }}</label>
+                            <input id="title" type="text" name="title" ng-model="formData.title">
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container>
+                        <label for="custom_description">{{:: 'Input Custom Description' | translate }}</label>
+                        <input id="custom_description" type="text" name="custom_description" ng-model="formData.custom_description">
+                    </md-input-container>
+
+                    <div layout-gt-sm="row">
+                        <!-- <h5>Art Crop Dimensions</h5> -->
+                        <md-input-container>
+                            <label for="crop_art_width">{{:: 'Width' | translate }}</label>
+                            <input id="crop_art_width" type="number" min="1"  name="crop_art_width" ng-model="formData.crop_art_width" flex-gt-sm >
+                        </md-input-container>
+                        <md-input-container>
+                            <label for="crop_art_height">{{:: 'Height' | translate }}</label>
+                            <input id="crop_art_height" type="number" min="1"  name="crop_art_height" ng-model="formData.crop_art_height" flex-gt-sm >
+                        </md-input-container>  
+                        <md-select placeholder="{{:: 'Choose Product Category' | translate }}" ng-model="formData.category_id">
+                            <md-option value="{{categorys.id}}" ng-repeat="categorys in category">{{categorys.category}}</md-option>
+                        </md-select>
+
+                        <md-select placeholder="{{:: 'Vendor API for Product' | translate }}" ng-model="formData.vendor_api_product">
+                            <md-option value="Acrylic Ideas">Acrylic Ideas</md-option>
+                            <md-option value="Galloree">Galloree</md-option>
+                            <md-option value="Graphik Dimensions">Graphik Dimensions</md-option>
+                            <md-option value="MWW">MWW</md-option>
+                        </md-select>
+                    </div>
+                    <div layout-gt-sm="row" class="product-div">
+                        <div class="col-md-3" style="margin-top: 10px;">
+                            <li style="list-style: none;" ng-click="showAddProduct(order, $event, allProducts)"><i class="icon icon-picture"></i> {{:: 'Attributes' | translate }}</li>
+                            <li style="list-style: none;" ng-click="showAddCanvasProduct(order, $event, allProducts)"><i class="icon icon-picture"></i> {{:: 'Variations' | translate }}</li>
+                        </div>
+                        <div class="col-md-7"  style="border-left: 1px solid #0000001f;margin-bottom: 10px;" >
+                            
+                            <div ng-if="pageName==''">
+                                <div layout-gt-sm="row"> 
+                                    <md-select placeholder="{{:: 'Custom Product Attribute' | translate }}" name="custom" ng-model="newformData.custom">
+                                        <md-option value="d" >For</md-option>
+                                    </md-select>
+                                    <div class="buttons">
+                                        <md-button class="md-primary md-raised" ng-click="showInputs()">Add</md-button>
+                                    </div>
+                                </div>
+                                <md-input-container>
+                                    <label for="size" style="color: black;">{{:: 'Size' | translate }}</label>
+                                </md-input-container>
+                                <hr>
+                                <div layout-gt-sm="row" id="sizeinfo" style="display: none;">
+                                    <md-input-container style="width: 50%;">
+                                        <label for="size_name">{{:: 'Name' | translate }}</label>
+                                        <input id="size_name" type="text name="size_name" ng-model="newformData.size_name" flex-gt-sm required>
+                                    </md-input-container>
+                                    <md-input-container style="width: 50%;">
+                                        <label for="size_value">{{:: 'Value' | translate }}</label>
+                                        <input id="size_value" type="text" name="size_value" ng-model="newformData.size_value" flex-gt-sm required>
+                                    </md-input-container>  
+                                </div>
+                                <md-input-container>
+                                    <label for="material" style="color: black;">{{:: 'Material' | translate }}</label>
+                                    <!-- <input id="material" type="text" name="material" > -->
+                                </md-input-container>
+                                <hr>
+                                <div layout-gt-sm="row" id="materialinfo" style="display: none;">
+                                    <md-input-container style="width: 50%;">
+                                        <label for="material_name">{{:: 'Name' | translate }}</label>
+                                        <input id="material_name" type="text" name="material_name" ng-model="newformData.material_name" flex-gt-sm required>
+                                    </md-input-container>
+                                    <md-input-container style="width: 50%;">
+                                        <label for="material_value">{{:: 'Value' | translate }}</label>
+                                        <input id="material_value" type="text" name="material_value" ng-model="newformData.material_value" flex-gt-sm required>
+                                    </md-input-container>  
+                                </div>
+                                <div layout-gt-sm="row" id="info" style="display: none;">
+                                    <md-input-container style="width: 50%;" >
+                                        <label for="name">{{:: 'Name' | translate }}</label>
+                                        <input id="name" type="text" name="name" ng-model="newformData.name" flex-gt-sm required>
+                                    </md-input-container>
+                                    <md-input-container style="width: 50%;">
+                                        <label for="value">{{:: 'Value' | translate }}</label>
+                                        <input id="value" type="text" name="value" ng-model="newformData.value" flex-gt-sm required>
+                                    </md-input-container>  
+                                </div>
+                                <div class="buttons" style="text-align: unset;">
+                                    <md-button class="md-primary md-raised" ng-click="addDetail(newformData.size_name,newformData.size_value,newformData.material_name,newformData.material_value,newformData.name,newformData.value)" translate>Save Attributes</md-button>
+                                </div>
+                            </div>
+                            <div ng-if="pageName=='showattribute'" >
+                                <div layout-gt-sm="row">
+                                    <md-input-container style="padding: 32px 8px 0px 0px;"><p>Default Form Values:</p></md-input-container>
+                                        <md-select placeholder="{{:: 'No default sizes' | translate }}" name="size[]" ng-model="">
+                                        </md-select>
+
+                                    <md-select placeholder="{{:: 'no default material' | translate }}" name="material" ng-model="">
+                                    </md-select>
+                                </div>
+                                <div layout-gt-sm="row"> 
+                                    <md-select placeholder="{{:: 'Custom Product Attribute' | translate }}" ng-model="">
+                                        <!-- <md-option value="{{categorys.id}}" ng-repeat="categorys in category">{{categorys.category}}</md-option> -->
+                                    </md-select>
+                                    <div class="buttons">
+                                        <md-button type="button" class="md-primary md-raised" id="showMoreInputs" ng-click="showDropDowns()">Add</md-button>
+                                    </div>
+                                </div>
+                                <div  ng-repeat="items in variationsItem">
+
+                                    <div layout-gt-sm="row">
+                                    <md-input-container style="padding: 32px 8px 0px 0px;"><p>#2080</p></md-input-container>
+
+                                    <md-select placeholder="{{:: 'size' | translate }}" name="size[]" ng-model="items.size">
+                                        <md-option value="24x45">24x45</md-option>
+                                        <md-option value="26x46">26x46</md-option>
+                                    </md-select>
+
+                                    <md-select placeholder="{{:: 'Material' | translate }}" name="material[]" ng-model="items.material">
+                                        <md-option value="Paper">Paper</md-option>
+                                        <md-option value="Canvas">Canvas</md-option>
+                                    </md-select>
+                                    <a href="javascript:;" ng-click="showMoreItmes(items)">show</a>
+                                    </div>
+                                    <!-- <button type="button" ng-click="showMoreItmes(items);">show</button> -->
+                                    <div ng-show="items.display">
+                                        <div layout-gt-sm="row">     
+                                            <md-input-container>
+                                                <a href="javascript:;" ng-file-select ng-file-change="uploadImage($files)" ng-multiple="false"><img src="assets/images/picture.png" style="margin-top: 21px;"></a>
+                                                <!-- <md-button class="md-primary md-raised" style="margin-top: -20px;" ng-file-select ng-file-change="uploadTopImage($files)" ng-multiple="false">Top Layer</md-button> -->
+                                            </md-input-container>                                       
+                                            <md-input-container >
+                                                <label for="crop_art_width">{{:: 'Width' | translate }}</label>
+                                                <input type="text" name="crop_art_width[]" ng-model="items.crop_art_width" flex-gt-sm required>
+                                            </md-input-container>
+                                            <md-input-container >
+                                                <label for="crop_art_height">{{:: 'Height' | translate }}</label>
+                                                <input type="text" name="crop_art_height[]" ng-model="items.crop_art_height" flex-gt-sm required>
+                                            </md-input-container>  
+                                            <md-input-container>
+                                                <label for="vendor_sku">{{:: 'SKU' | translate }}</label>
+                                                <input type="text" name="vendor_sku[]" ng-model="items.vendor_sku" flex-gt-sm required>
+                                            </md-input-container> 
+                                        </div>
+                                        <div layout-gt-sm="row">
+                                            <md-input-container  style="width: 50%">
+                                                <label for="regular_price">{{:: 'Regular Price' | translate }}</label>
+                                                <input type="text" name="regular_price[]" ng-model="items.regular_price" flex-gt-sm required>
+                                            </md-input-container>  
+                                            <md-input-container style="width: 50%">
+                                                <label for="sale_price">{{:: 'Sale Price' | translate }}</label>
+                                                <textarea id="sale_price" type="text" name="sale_price[]" ng-model="items.sale_price" rows="3" flex-gt-sm required></textarea>
+                                            </md-input-container> 
+                                        </div>                                
+                                        <md-input-container style="width: 100%">
+                                            <label for="custom_description">{{:: 'Description' | translate }}</label>
+                                            <input id="custom_description" type="text" name="custom_description[]" ng-model="items.custom_description" flex-gt-sm required>
+                                        </md-input-container> 
+                                        <div layout-gt-sm="row">
+                                            <md-input-container >
+                                                <label for="flat_rate">{{:: 'Flat Rate' | translate }}</label>
+                                                <input id="flat_rate" type="text" name="flat_rate[]" ng-model="items.flat_rate" flex-gt-sm required>
+                                            </md-input-container>
+                                            <md-input-container >
+                                                <label for="standard_shipping">{{:: 'Standard Shipping' | translate }}</label>
+                                                <input id="standard_shipping" type="text" name="standard_shipping[]" ng-model="items.standard_shipping" flex-gt-sm required>
+                                            </md-input-container>  
+                                            <md-input-container>
+                                                <label for="rush_delivery">{{:: 'Rush Delivery' | translate }}</label>
+                                                <input id="rush_delivery" type="text" name="rush_delivery[]" ng-model="items.rush_delivery" flex-gt-sm required>
+                                            </md-input-container> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="buttons" style="text-align: unset;">
+                                    <md-button type="button" class="md-primary md-raised" ng-click="addProductVariations(formData.size,formData.material)">Save Attributes</md-button>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div layout-gt-sm="row" class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                        <md-button type="button" class="md-primary md-raised" ng-click="addCanvasProduct(formData.custom_title,formData.title,formData.custom_description,formData.crop_art_width,formData.crop_art_height,formData.category_id,formData.vendor_api_product)" translate>Save & Publish</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="assets/views/modals/manage-product.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Manage Product Categories' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="editCategory()">
+            <div class="errors"></div>
+            <div ng-repeat="categorys in category">
+            <md-input-container >
+                <input id="category" type="text" name="category" ng-model="categorys.category"> <i class="mdi mdi-close"></i>
+            </md-input-container><a href ng-click="deleteCategory(categorys.id)" style="color: #ff5722;">Delete</a>
+            </div>
+
+            <a href ng-click="showAddCategory()" style="color: #ff5722;">+ Add New Category</a>
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" >Save</md-button>
+            </div><!-- ng-click="editCategory(categorys)" -->
+        </form>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="assets/views/modals/add-category.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Add Categories' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="addCategory()">
+            <div class="errors"></div>
+
+            <md-input-container>
+                <label for="category">{{:: 'Category' | translate }}</label>
+                <input id="category" type="text" name="category" ng-model="formData.category"> <i class="mdi mdi-close"></i>
+            </md-input-container>
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Save</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/javascript">
+    var x = 1;
+    function showProductInfoInputs(){
+        alert(1111);
+        console.log(x);
+        if(x < 10){ 
+            x++; 
+            $('#productInfo').append('<div layout-gt-sm="row"><md-input-container ><label for="crop_art_width">Width</label><input id="crop_art_width" type="text" name="crop_art_width[]" ng-model="formData.crop_art_width" flex-gt-sm required></md-input-container><md-input-container ><label for="crop_art_height">Height</label><input id="crop_art_height" type="text" name="crop_art_height[]" ng-model="formData.crop_art_height" flex-gt-sm required></md-input-container><md-input-container><label for="vendor_sku">SKU</label><input id="vendor_sku" type="text" name="vendor_sku[]" ng-model="formData.vendor_sku" flex-gt-sm required></md-input-container></div><div layout-gt-sm="row"><md-input-container  style="width: 50%"><label for="regular_price">Regular Price</label><input id="regular_price" type="text" name="regular_price[]" ng-model="formData.regular_price" flex-gt-sm required></md-input-container><md-input-container style="width: 50%"><label for="sale_price">Sale Price</label><textarea id="sale_price" type="text" name="sale_price[]" ng-model="formData.sale_price" rows="3" flex-gt-sm required></textarea></md-input-container></div><md-input-container style="width: 100%"><label for="custom_description">Description</label><input id="custom_description" type="text" name="custom_description[]" ng-model="formData.custom_description" flex-gt-sm required></md-input-container><div layout-gt-sm="row"><md-input-container ><label for="flat_rate">Flat Rate</label><input id="flat_rate" type="text" name="flat_rate[]" ng-model="formData.flat_rate" flex-gt-sm required></md-input-container><md-input-container ><label for="standard_shipping">Standard Shipping</label><input id="standard_shipping" type="text" name="standard_shipping[]" ng-model="formData.standard_shipping" flex-gt-sm required></md-input-container><md-input-container><label for="rush_delivery">Rush Delivery</label><input id="rush_delivery" type="text" name="rush_delivery[]" ng-model="formData.rush_delivery" flex-gt-sm required></md-input-container></div>');
+        }
+    }  
+</script>

@@ -1,0 +1,129 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+/*.table_content{
+    text-align: right;float: right;margin: 0;
+}*/
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.box{
+    border: 1px solid #cccccc;
+    width: 200px;
+    height: 200px;
+}
+.img{
+    height: 180px;
+}
+</style>
+<div class="material-table" ng-controller="GalleryController" ng-class="{ loading: usersAjaxInProgress }">
+     <div class="table table_content table-hover">
+        <div ><!-- class="dashboard-penal" -->
+            <div class="dashboard-title"><h2>Gallery Setting</h2></div>
+            <div class="user-items grid-view deselect-file">
+                <div layout="row" layout-wrap>
+                    <div flex="33">
+                        <h4>Gallery Logo or Artist Picture</h4>
+                        <div class="box">
+                            <img src="{{authUser.gallery_logo}}" style="width: 100%;">
+                        </div>
+                        <div class="buttonss">
+                            <md-button class="md-primary md-raised" ng-file-select ng-file-change="uploadGalleryLogo($files)" ng-multiple="false">Upload</md-button>
+                        </div>
+                    </div>    
+                    <div flex="66">
+                       <h4>About the Gallery Artist</h4>
+                       <textarea class="form-control" rows="9" ng-model="authUser.about_gallery_artist">{{authUser.about_gallery_artist}}</textarea>
+                       <div class="buttonss">
+                            <button class="md-primary md-raised md-button" ng-click="submitAboutGalleryArtist(authUser.about_gallery_artist)" style="width: 100px;color: #FFF;" value="Save">Save</button>
+                        </div>
+                    </div>
+                </div>  
+                <hr />
+                <h4>Drag and drop your artwork in the order you would like it displayed at your Artist Gallery</h4>
+                <div layout="row" layout-wrap  >                        
+                    <div class="user-item"  dir-paginate="arts in userarts|itemsPerPage:20| filter:search.query" ed-context-menu-item data-id="{{arts.id}}">
+                         <!-- ng-repeat="arts in userarts" ed-context-menu-item data-id="{{arts.id }}" -->
+                        <div class="user-item-inner">
+                            <div class="img-wrapper"><img src="uploads/{{arts.user_id}}/{{arts.id}}/{{arts.file_name}}" class="img">
+                            <!-- <div class="img-wrapper"><img src="assets/images/img/art.jpg" class="img"> -->
+                            </div>
+                            <div class="user-item-caption">
+                                <div class="name">{{arts.name}}</div>
+                                <div class="size">
+                                    127 KB
+                                    <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                </div>
+                                <div class="ago">
+                                   1 min ago
+                                   <span style="float: right;color: green;font-size: 17px;">Publish</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <ul id="context-menu" ed-context-menu></ul> -->
+                    </div>                       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+</div>
+</div>
+<style type="text/css">
+.buttonss {
+    margin-top: 11px;
+}
+</style>
+<script type="text/ng-template" id="assets/views/modals/edit-galleryart.html">
+   <md-dialog class="md-modal move-photo-modal" style="width: 50%;">
+        <div class="md-modal-header">
+            <h1>{{:: 'Markup Percentage Setup' | translate }}</h1>
+            <div ng-click="photos.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <div>
+          {{item}}
+            <form>{{formData}}
+                <h3>Edit Gallery Setting</h3>
+                <md-input-container >
+                    <label>{{ 'Markup Percentage' | translate }}</label>
+                    <input type="number" ng-model="formData.price" min="1" required>
+                </md-input-container>
+                <span style="position: absolute;margin-top: -53px;right: 44px;">% </span>
+                 <md-input-container >
+                    <input type="text" ng-model="formData.name" min="1" required>
+                </md-input-container>
+                <div class="buttons">
+                    <md-button ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                    <md-button type="submit" class="md-raised md-primary" ng-click="submit(formData.price,formData.name)">{{:: 'submit' | translate }}</md-button>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="buttons">
+            <md-button ng-click="photos.closeModal()">{{:: 'cancel' | translate }}</md-button>
+            <md-button href="/#/products">{{:: 'Find Products' | translate }}</md-button>
+        </div> -->
+    </md-dialog>
+</script>

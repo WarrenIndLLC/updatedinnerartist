@@ -1,0 +1,75 @@
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
+<script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css" />
+
+<style>
+
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.table_content{
+    text-align: right;float: right;margin: 0;
+}
+</style>
+<div class="material-table" ng-controller="SellerStatisticController" ng-class="{ loading: usersAjaxInProgress }">
+    
+    <div class="table table-hover">
+      <!-- <p>Under Development  </p> -->
+      <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <!-- <div ng-cloak>
+          <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+              <md-tab label="one">
+                <md-content class="md-padding">
+                  <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+              <md-tab label="one">
+                <md-content class="md-padding">
+                  <h1 class="md-display-2">Orders</h1>
+                </md-content>
+              </md-tab>
+              <md-tab label="two">
+                <md-content class="md-padding">
+                    <h1 class="md-display-2">Customers</h1>
+                </md-content>
+              </md-tab>
+              <md-tab label="three">
+                <md-content class="md-padding">
+                  <h1 class="md-display-2">Stock</h1>
+                </md-content>
+              </md-tab>
+            </md-tabs>
+          </md-content>
+                </md-content>
+              </md-tab>
+              <md-tab label="two">
+                <md-content class="md-padding">
+                    <h1 class="md-display-2">Customers</h1>
+                </md-content>
+              </md-tab>
+              <md-tab label="three">
+                <md-content class="md-padding">
+                  <h1 class="md-display-2">Stock</h1>
+                </md-content>
+              </md-tab>
+            </md-tabs>
+          </md-content>
+        </div> -->
+    </div>
+    <div class="footer">
+       
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>

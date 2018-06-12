@@ -1,0 +1,155 @@
+<div class="material-table" ng-controller="UsersController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <md-button class="md-primary md-raised" ng-click="showAddPromo(order, $event, allArtworks)">{{:: 'add' | translate }}</md-button>
+        </div>
+        <div class="controls">
+            <div class="search">
+                <input placeholder="{{:: 'search' | translate }}" type="text" ng-model="search.query">
+                <i class="icon icon-search"></i>
+            </div>
+        </div>
+    </div>
+    <div class="selected-header" ng-if="selectedItems.length">
+        <div class="caption">{{ selectedItems.length }} {{:: 'usersSelected' | translate }}</div>
+        <div class="controls">
+            <i class="icon icon-trash" ng-click="deleteUsers(selectedItems)"></i>
+        </div>
+    </div>
+    <div class="table table-hover">
+        <div class="table-row table-head">
+            <!-- <div class="table-col small-col align-left">
+                <md-checkbox aria-label="select all users" ng-checked="$parent.selectedItems.length === users.all.length" ng-click="toggleAllUsers()"></md-checkbox>
+            </div> -->
+            <!-- <div class="table-col image">{{:: 'avatar' | translate }}</div> -->
+            <div class="table-col">{{:: 'Code Name' | translate }}</div>
+            <div class="table-col">{{:: 'Coupan Code' | translate }}</div>
+            <div class="table-col">{{:: 'Total Cart Discount' | translate }}</div>
+            <div class="table-col">{{:: 'Usage Limit' | translate }}</div>
+            <div class="table-col">{{:: 'Expiration Date' | translate }}</div>
+            <div class="table-col small-col align-right"></div>
+        </div>
+
+        <div class="table-body">
+            <div class="table-row" dir-paginate="promoCodes in promoCode | filter: search.query | itemsPerPage: itemsPerPage" current-page="currentPage" ng-class="{ selected: isItemSelected(promoCodes) }" ng-click="select(promoCodes)">
+                <!-- <div class="table-col small-col align-left">
+                    <md-checkbox aria-label="select user" ng-checked="isItemSelected(user)"></md-checkbox>
+                </div>
+                <div class="table-col image"><img ng-src="{{ users.getAvatar(user) }}"/></div> -->
+                <div class="table-col">{{ promoCodes.code_name }}</div>
+                <div class="table-col">{{ promoCodes.coupon_code }}</div>
+                <div class="table-col">{{ promoCodes.total_cart_discount }}</div>
+                <div class="table-col">{{ promoCodes.usage_limit }}</div>
+                <div class="table-col">{{ promoCodes.expiration_date }}</div>
+                <div class="table-col small-col align-right"><i class="icon icon-pencil" ng-click="showEditPromo(user, $event, promoCodes); $event.stopPropagation()" ed-tooltip="{{:: 'editUser' | translate }}"></i><i class="icon icon-trash" ng-click="deletePromo(promoCodes); $event.stopPropagation()" ed-tooltip="{{:: 'Delete Code' | translate }}"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+
+<script type="text/ng-template" id="assets/views/modals/add-promo.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Add Promo Code' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form ng-submit="addPromocode()">
+
+            <div class="errors"></div>
+
+            <md-input-container>
+                <label for="code_name">{{:: 'Code Name' | translate }}</label>
+                <input id="code_name" type="text" ng-model="promoCode.code_name">
+            </md-input-container>
+                <md-input-container flex>
+                    <label for="coupon_code">{{:: 'Coupon Code' | translate }}</label>
+                    <input id="coupon_code" type="text" ng-model="promoCode.coupon_code">
+                </md-input-container>
+
+                <md-input-container flex>
+                    <label for="total_cart_discount">{{:: 'Total Cart Discount' | translate }}</label>
+                    <input id="total_cart_discount" type="text" ng-model="promoCode.total_cart_discount">
+                </md-input-container>
+            
+
+            <md-input-container>
+                <label for="usage_limit">{{:: 'Usage Limit' | translate }}</label>
+                <input id="usage_limit" type="text" ng-model="promoCode.usage_limit">
+            </md-input-container>
+
+                <md-input-container flex>
+                    <label for="expiration_date">{{:: 'Expiration Date' | translate }}</label>
+                    <input id="expiration_date" type="text" ng-model="promoCode.expiration_date">
+                </md-input-container>
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Add</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/edit-promo.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Edit Promo Code' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form ng-submit="editPromocode()">
+
+            <div class="errors"></div>
+
+            <md-input-container>
+                <label for="code_name">{{:: 'Code Name' | translate }}</label>
+                <input id="code_name" type="text" ng-model="promos.code_name">
+            </md-input-container>
+                <md-input-container flex>
+                    <label for="coupon_code">{{:: 'Coupon Code' | translate }}</label>
+                    <input id="coupon_code" type="text" ng-model="promos.coupon_code">
+                </md-input-container>
+
+                <md-input-container flex>
+                    <label for="total_cart_discount">{{:: 'Total Cart Discount' | translate }}</label>
+                    <input id="total_cart_discount" type="text" ng-model="promos.total_cart_discount">
+                </md-input-container>
+            
+
+            <md-input-container>
+                <label for="usage_limit">{{:: 'Usage Limit' | translate }}</label>
+                <input id="usage_limit" type="text" ng-model="promos.usage_limit">
+            </md-input-container>
+
+                <md-input-container flex>
+                    <label for="expiration_date">{{:: 'Expiration Date' | translate }}</label>
+                    <input id="expiration_date" type="text" ng-model="promos.expiration_date">
+                </md-input-container>
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Update</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>

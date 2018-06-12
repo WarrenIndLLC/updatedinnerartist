@@ -1,0 +1,133 @@
+<div class="material-table" ng-controller="FaqController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <md-button class="md-primary md-raised" ng-click="showAddfaq(order, $event, allArtworks)">{{:: 'add' | translate }}</md-button>
+        </div>
+        <div class="controls">
+            <div class="search">
+                <input placeholder="{{:: 'search' | translate }}" type="text" ng-model="search.query">
+                <i class="icon icon-search"></i>
+            </div>
+        </div>
+    </div>
+    <div class="selected-header" ng-if="selectedItems.length">
+        <div class="caption">{{ selectedItems.length }} {{:: 'usersSelected' | translate }}</div>
+        <div class="controls">
+            <i class="icon icon-trash" ng-click="deleteUsers(selectedItems)"></i>
+        </div>
+    </div>
+    <div class="table table-hover">
+        <div class="table-row table-head">
+            <!-- <div class="table-col small-col align-left">
+                <md-checkbox aria-label="select all users" ng-checked="$parent.selectedItems.length === users.all.length" ng-click="toggleAllUsers()"></md-checkbox>
+            </div> -->
+            <!-- <div class="table-col image">{{:: 'Image' | translate }}</div> -->
+            <!--< div class="table-col">{{:: 'Type' | translate }}</div> -->
+            <div class="table-col">{{:: 'Title' | translate }}</div>
+            <div class="table-col">{{:: 'Description' | translate }}</div>
+            <!-- <div class="table-col">{{:: 'Total Cart Discount' | translate }}</div>
+            <div class="table-col">{{:: 'Usage Limit' | translate }}</div>
+            <div class="table-col">{{:: 'Expiration Date' | translate }}</div> -->
+            <div class="table-col small-col align-right"></div>
+        </div>
+
+        <div class="table-body">
+            <div class="table-row" dir-paginate="faqs in faq | filter: search.query | itemsPerPage: itemsPerPage" current-page="currentPage" ng-class="{ selected: isItemSelected(faqs) }" ng-click="select(faqs)">
+                <!-- <div class="table-col small-col align-left">
+                    <md-checkbox aria-label="select user" ng-checked="isItemSelected(user)"></md-checkbox>
+                </div>-->
+                <!-- <div class="table-col image"><img ng-src="{{ blogs.image }}"/></div>  -->
+                <div class="table-col">{{ faqs.title }}</div>
+                <div class="table-col">{{ faqs.description }}</div>
+                <!-- <div class="table-col">{{ promoCodes.total_cart_discount }}</div>
+                <div class="table-col">{{ promoCodes.usage_limit }}</div>
+                <div class="table-col">{{ promoCodes.expiration_date }}</div> -->
+                <div class="table-col small-col "><i class="icon icon-pencil" ng-click="showEditFaq(user, $event, faqs); $event.stopPropagation()" ed-tooltip="{{:: 'editBlog' | translate }}"></i><i class="icon icon-trash" ng-click="deletefaq(faqs); $event.stopPropagation()" ed-tooltip="{{:: 'deleteBlog' | translate }}"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+
+<script type="text/ng-template" id="assets/views/modals/add-faq.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Add Faq' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form ng-submit="addFaq()">
+
+            <div class="errors"></div>
+            <!-- <md-select placeholder="{{:: 'Choose Type' | translate }}" ng-model="formData.type">
+                <md-option value="blog">BLOG</md-option>
+                <md-option value="faq">FAQ</md-option>
+            </md-select> -->
+
+            <md-input-container>
+                <label for="code_name">{{:: 'Title' | translate }}</label>
+                <input id="code_name" type="text" ng-model="formData.title">
+            </md-input-container>
+                <md-input-container >
+                    <label for="coupon_code">{{:: 'Description' | translate }}</label>
+                    <input id="coupon_code" type="text" ng-model="formData.description">
+                </md-input-container>                
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Add</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/edit-faq.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Edit Faq' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form ng-submit="editFaq()">
+
+            <div class="errors"></div>
+
+            <!-- <md-select placeholder="{{:: 'Choose Type' | translate }}" ng-model="faq.type">
+                <md-option value="blog">BLOG</md-option>
+                <md-option value="faq">FAQ</md-option>
+            </md-select> -->
+
+            <md-input-container>
+                <label for="title">{{:: 'Title' | translate }}</label>
+                <input id="title" type="text" ng-model="faq.title">
+            </md-input-container>
+                <md-input-container flex>
+                    <label for="description">{{:: 'Description' | translate }}</label>
+                    <input id="description" type="text" ng-model="faq.description">
+                </md-input-container>
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Update</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>

@@ -1,0 +1,82 @@
+<style type="text/css">
+.selectedborer{
+    border: 1px solid #e26c08;
+}
+.arterror{
+    color: #e3661f;float: left;width: 100%;margin-top: 8px;font-size: 14px;
+}
+</style>
+<div ng-include="'views/header.html'"></div>
+<div class="single-product-page-section">
+    <div class="container">
+        <div class="row" >
+            <div class="col-lg-6">
+                <div class="single-product-image">
+                    <img class="img-responsive newImages" id="newImage" ng-if="singleProduct.bottom_layer_image" src="{{singleProduct.bottom_layer_image}}" style="width: 500px;height: 500px;" onContextMenu="return false;"/>
+                    <img class="img-responsive" ng-if="!singleProduct.bottom_layer_image" src="assets/img/SingleProductPlaceholder.jpg " onContextMenu="return false;"/>
+                </div>
+            </div>
+            <div ng-if="showPagename=='simpleProduct'" style="margin:15px;">
+                <div ng-include="'views/simple-product.html'"></div>
+            </div>
+            <div ng-if="showPagename=='canvasProduct'" style="margin:15px;">
+                <div ng-include="'views/canvas-product.html'"></div>
+            </div>
+        </div>
+        <div class="row pb-70" style="margin:15px">
+            <div class="col-lg-12">
+                <div class="related-products">
+                    <h3>Related Product</h3>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" ng-repeat="related in relatedProducts" ng-if="related.id!=singleProduct.id">
+                <div class="single-product">
+                    <img ng-if="related.bottom_layer_image" src="{{related.bottom_layer_image}}" class="img-responsive" onContextMenu="return false;">
+                    <img ng-if="!related.bottom_layer_image" src="assets/img/ProductArchivePlaceholder.jpg" class="img-responsive" onContextMenu="return false;">
+                    <div class="product-name-price">
+                        <p>{{related.title}}</p>
+                        <h3>${{related.regular_price}}</h3>
+                    </div>
+                     <div class="view-artwork" ng-click="viewProductDetaisl(related)">
+                        <a data-fancybox data-src="#modarelated" href="javascript:;" class="btn">view artwork</a>
+                    </div>
+                </div>                            
+            </div>
+            <div style="display: none;" id="modarelated">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="viewart-image" ng-click="openImage(prodctDetails)">
+                            <a data-fancybox data-src="#modalimage" href="javascript:;"><img class="img-responsive" ng-if="prodctDetails.bottom_layer_image" src="{{prodctDetails.bottom_layer_image}}" style="width: 361px;height: 272px;" onContextMenu="return false;"/></a>
+                            <img class="img-responsive" ng-if="!prodctDetails.bottom_layer_image" src="assets/img/viewart-image.jpg" onContextMenu="return false;"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="single-product-details">
+                            <h2>{{prodctDetails.title}}</h2>
+                            <p>This piece adds a [mark up percentage here]% mark up to the base price of a product. <br> <br>
+                            Add this art to your “Art Cart” by clicking on the button below. What is an Art Cart? It’s a separate cart where you can hold the different types of art that you’d like to see what they’d look like on different products.
+                            <br> <br>
+                            The Art Cart is displayed under the main menu in the grey Page Title Bar.</p>
+                            <a href ng-click="redirectToProduct(prodctDetails.id);" class="btn">View Prodct</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: none;width: unset;" id="modalimage">
+                <div class="row">
+                    <div class="viewart-image">
+                        <img class="img-responsive" ng-if="image.bottom_layer_image" src="{{image.bottom_layer_image}}" style="width: 361px;height: 272px;" onContextMenu="return false;"/>
+                        <img class="img-responsive" ng-if="!image.bottom_layer_image" src="assets/img/viewart-image.jpg" onContextMenu="return false;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--single Product Section Start -->
+<div ng-include="'views/footer.html'"></div>
+<script type="text/javascript">
+    setTimeout(function(){
+        $('[data-fancybox]').fancybox();
+    },1500);
+</script>

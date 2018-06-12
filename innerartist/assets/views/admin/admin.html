@@ -1,0 +1,78 @@
+<div id="dashboard">
+    <div class="flex-container" id="admin">
+        <section id="left-col-upper">
+            <section id="left-col">
+                <div class="current-user" data-toggle="dropdown">
+                    <div class="avatar">
+                        <img class="img-responsive" ng-src="{{ users.getAvatar() }}"/>
+                    </div>
+                    <div class="user-email dropdown">
+                        {{ users.getUsernameForCurrentUser() }}
+                        <span class="caret"></span>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ui-sref="dashboard.albums"><a href=""><i class="iconnew iconnew-gauge"></i> {{:: 'dashboard' | translate }}</a></li>
+                            <!-- <li ng-click="users.showAccountSettingsModal($event, 'username')"><a href=""><i class="icon icon-pencil"></i> {{:: 'editUsername' | translate }}</a></li>
+                            <li ng-click="users.showAccountSettingsModal($event, 'avatar')"><a href=""><i class="icon icon-emo-sunglasses"></i> {{:: 'changeAvatar' | translate }}</a></li>
+                            <li class="separator"></li>
+                            <li ng-click="users.showAccountSettingsModal($event)"><a href=""><i class="icon icon-params"></i> {{:: 'accountSettings' | translate }}</a></li> -->
+                            <li ng-click="users.logout()"><a href=""><i class="icon icon-login"></i> {{:: 'logOut' | translate }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="categories-list" style="overflow-y: auto;height: 100%;padding-bottom: 100px;">
+                    <div class="category" ui-sref=".analytics" ui-sref-active="open"><i class="iconnew iconnew-gauge"></i> <span class="text">{{:: 'Dashboard' | translate }}</span></div>
+                    <div class="category" ui-sref=".order" ui-sref-active="open"><i class="iconnew iconnew-basket-1"></i> <span class="text">{{:: 'Orders'}}</span></div>
+
+                    <!-- <div class="category" ui-sref=".imageRepository" ui-sref-active="open"><i class="icon icon-pictures"></i><span class="text">Image Repository</span></div> -->
+
+                    <!-- <div class="category" ui-sref=".orderApproval" ui-sref-active="open"><i class="iconnew iconnew-basket-1"></i> <span class="text">{{:: 'Order Approvals' | translate }}</span></div> -->
+
+                    <!-- <div class="category" ui-sref=".orderDenials" ui-sref-active="open"><i class="iconnew iconnew-basket-1"></i> <span class="text">{{:: 'Order Denials' | translate }}</span></div> -->
+
+                    <div class="category" ui-sref=".salesStatistics" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Sales Statistics' | translate }}</span></div>
+
+                    <div class="category" ui-sref=".product" ui-sref-active="open"><i class="icon icon-bag"></i> <span class="text">{{:: 'Products' | translate }}</span></div>
+
+                    <div class="category" ui-sref=".artApproval" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Art Approvals' | translate }}</span></div>
+
+                    <!-- <div class="category" ui-sref=".artDenials" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Art Denials' | translate }}</span></div> -->
+
+                   <div class="category" ui-sref=".vendorApprovals" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Vendor Approvals' | translate }}</span></div>
+                   <div class="category" ui-sref=".vendorPayments" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Vendor Payments' | translate }}</span></div>
+                   <div class="category" ui-sref=".promoCode" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Promo Codes' | translate }}</span></div>
+                    <div class="category" ui-sref=".blog" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Blog' | translate }}</span></div>
+                    <div class="category" ui-sref=".faq" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Faq' | translate }}</span></div>
+                    <div class="category" ui-sref=".supportTicket" ui-sref-active="open"><i class="icon icon-userss"></i> <span class="text">{{:: 'Support Ticket' | translate }}</span></div>
+
+                    <div class="category" ui-sref=".users" ui-sref-active="open"><i class="icon icon-users"></i> <span class="text">{{:: 'Users' | translate }}</span></div>
+                    <div class="category" ui-sref=".photos" ui-sref-active="open"><i class="icon icon-pictures"></i> <span class="text">{{:: 'Artwork' | translate }}</span></div>
+                    <div class="category" ui-sref=".settings" ui-sref-active="open"><i class="icon icon-params"></i> <span class="text">{{:: 'settings' | translate }}</span></div>
+
+                    <div class="category" ui-sref=".ads" ui-sref-active="open"><i class="icon icon-money"></i> <span class="text">{{:: 'Ads' | translate }}</span></div>
+                    
+                </div>
+            </section>
+
+            <section id="middle-col">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="/#/">
+                                <img class="logo" ng-src="{{ baseUrl+'assets/images/logo_dark.png' }}" alt="logo"/>
+                            </a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="navbar-text" ng-click="users.logout()"><i class="icon icon-login"></i> <div class="text">{{:: 'logOut' | translate }}</div></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <section class="flex-fluid-container">
+                    <div class="flex-fluid" ui-view></div>
+                </section>
+            </section>
+        </section>
+    </div>
+</div>

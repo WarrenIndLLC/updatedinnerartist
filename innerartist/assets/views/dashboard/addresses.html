@@ -1,0 +1,187 @@
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table_content table-hover">
+        <div class="dashboard-penal">
+            <div class="dashboard-title"><h2>Account Details</h2></div>
+            <div class="dashboard-container">
+                <div class="dashboard-penal">
+                    <p>The Following addressess will be used on the checkout page by default.</p>                    
+                    <div class="flex-50 layout-column">
+                        <div class="dashboard-title"><h3>Billing Address <a ng-click="editAddress(billing);"><small> Edit</small></a></h3> </div>
+                            <div class="dashboard-container">
+                                <div class="dashboard-penal">
+                                    <p>{{billing.first_name}} {{billing.last_name}}</p>
+                                    <p>{{billing.company}}</p>
+                                    <p>{{billing.address}},{{billing.city}},{{billing.state}}</p>
+                                    <p>{{billing.country}} ,{{billing.zip}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-column">
+                        <div class="dashboard-title"><h3>Shipping Address <a ng-click="editShippingAddress(shipping);"><small> Edit</small></a></h3></div>
+                            <div class="dashboard-container">
+                                <div class="dashboard-penal">
+                                    <p>{{shipping.first_name}} {{shipping.last_name}}</p>
+                                    <p>{{shipping.company}}</p>
+                                    <p>{{shipping.address}}, {{shipping.city}},{{shipping.state}}</p>
+                                    <p>{{shipping.country}} ,{{shipping.zip}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="assets/views/modals/billing-address.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Billing Address' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="billingSubmit()">
+
+                    <div class="errors"></div>
+                    <input type="hidden" name="id" ng-model="billing.id">
+                    <md-input-container>{{e.billing.first_name}}
+                        <label for="first_name">{{:: 'Your first name' | translate }}</label>
+                        <input id="first_name" type="text" name="first_name" ng-model="billing.first_name">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="last_name">{{:: 'Your last name' | translate }}</label>
+                        <input id="last_name" type="text" name="last_name" ng-model="billing.last_name">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="company">{{:: 'Your Company' | translate }}</label>
+                        <input id="company" type="text" name="company" ng-model="billing.company">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="address">{{:: 'Street Address' | translate }}</label>
+                        <input id="address" type="text" name="address" ng-model="billing.address">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="country">{{:: 'Your Country' | translate }}</label>
+                        <input id="country" type="text" name="country" ng-model="billing.country">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="city">{{:: 'Your City' | translate }}</label>
+                        <input id="city" type="text" name="city" ng-model="billing.city">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="state">{{:: 'Your State' | translate }}</label>
+                        <input id="state" type="text" name="state" ng-model="billing.state">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="zip">{{:: 'Your zip' | translate }}</label>
+                        <input id="zip" type="text" name="zip" ng-model="billing.zip">
+                    </md-input-container>
+
+                    <!-- <md-input-container>
+                        <label for="phone">{{:: 'Your Phone' | translate }}</label>
+                        <input id="phone" type="text" name="phone" ng-model="account.phone">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="email">{{:: 'Your email address' | translate }}</label>
+                        <input id="email" type="email" name="email" ng-model="account.email" >
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="address">{{:: 'Your address' | translate }}</label>
+                        <input id="address" type="text" name="address" ng-model="account.address">
+                    </md-input-container> -->
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Update Address</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/shipping-address.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>Shipping Address</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="shippingSubmit()">
+            <div class="errors"></div>
+            <input type="hidden" name="id" ng-model="shipping.id">
+            <md-input-container>
+                <label for="first_name">{{:: 'Your first name' | translate }}</label>
+                <input id="first_name" type="text" name="first_name" ng-model="shipping.first_name">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="last_name">{{:: 'Your last name' | translate }}</label>
+                <input id="last_name" type="text" name="last_name" ng-model="shipping.last_name">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="company">{{:: 'Your Company' | translate }}</label>
+                <input id="company" type="text" name="company" ng-model="shipping.company">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="address">{{:: 'Street Address' | translate }}</label>
+                <input id="address" type="text" name="address" ng-model="shipping.address">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="country">{{:: 'Your Country' | translate }}</label>
+                <input id="country" type="text" name="country" ng-model="shipping.country">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="city">{{:: 'Your City' | translate }}</label>
+                <input id="city" type="text" name="city" ng-model="shipping.city">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="state">{{:: 'Your State' | translate }}</label>
+                <input id="state" type="text" name="state" ng-model="shipping.state">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="zip">{{:: 'Your zip' | translate }}</label>
+                <input id="zip" type="text" name="zip" ng-model="shipping.zip">
+            </md-input-container>
+
+            <!-- <md-input-container>
+                <label for="phone">{{:: 'Your Phone' | translate }}</label>
+                <input id="phone" type="text" name="phone" ng-model="account.phone">
+            </md-input-container>
+
+            <md-input-container>
+                <label for="email">{{:: 'Your email address' | translate }}</label>
+                <input id="email" type="email" name="email" ng-model="account.email" >
+            </md-input-container>
+
+            <md-input-container>
+                <label for="address">{{:: 'Your address' | translate }}</label>
+                <input id="address" type="text" name="address" ng-model="account.address">
+            </md-input-container> -->
+
+            <div class="buttons">
+                <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+                <md-button type="submit" class="md-primary md-raised" translate>Update Address</md-button>
+            </div>
+        </form>
+    </md-dialog>
+</script>

@@ -1,0 +1,144 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+/*button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}*/
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.box{
+    border: 1px solid #cccccc;
+    width: 200px;
+    height: 200px;
+}
+.img{
+    height: 180px;
+}
+</style>
+<div class="material-table" ng-controller="ProductCartController" ng-class="{ loading: usersAjaxInProgress }">
+     <div class="table table_content table-hover">
+        <div ><!-- class="dashboard-penal" -->
+            <div class="dashboard-title"><h2>Product Cart</h2></div>
+            <div class="user-items grid-view deselect-file">
+                    <!-- <h4>Drag and drop your artwork in the order you would like it displayed at your Artist Gallery</h4> -->
+                    <div layout="row" layout-wrap  >
+                        <div class="user-item" ng-repeat="cart in productCart">
+                            <div class="user-item-inner">
+                                <div class="img-wrapper"><img src="{{cart.top_layer_image}}" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">{{cart.title}}</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <!-- <span style="float: right;color: green;font-size: 17px;">Publish</span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="user-item" >
+                            <div class="user-item-inner">
+                                <div class="img-wrapper"><img src="assets/images/img/art.jpg" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">Untitled ArtWork</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <span style="float: right;color: green;font-size: 17px;">Publish</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-item" >
+                            <div class="user-item-inner">
+                                <div class="img-wrapper"><img src="assets/images/img/art.jpg" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">Untitled ArtWork</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <span style="float: right;color: green;font-size: 17px;">Publish</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-item" >
+                            <div class="user-item-inner">
+                                <div class="img-wrapper"><img src="assets/images/img/art.jpg" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">Untitled ArtWork</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <span style="float: right;color: green;font-size: 17px;">Publish</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-item" >
+                            <div class="user-item-inner">
+                                <div class="img-wrapper"><img src="assets/images/img/art.jpg" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">Untitled ArtWork</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <span style="float: right;color: green;font-size: 17px;">Publish</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="user-item" >
+                            <div class="user-item-inner">
+                                <div class="img-wrapper"><img src="assets/images/img/art.jpg" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">Untitled ArtWork</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <span style="float: right;color: green;font-size: 17px;">Publish</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <style type="text/css">
+.buttons {
+    margin-top: 11px;
+}
+</style> -->

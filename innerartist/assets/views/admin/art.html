@@ -1,0 +1,164 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.table_content{
+    text-align: right;float: right;margin: 0;
+}
+.align-right{
+    float: right;
+}
+.align-left{
+    float: left;
+}
+.box{
+    border: 1px solid #cccccc;
+    width: 200px;
+    height: 200px;
+}
+.img{
+    height: 180px;
+}
+</style>
+<div class="material-table" ng-controller="ArtworkController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <!-- <md-button class="md-primary md-raised" ng-click="showUserModal(null, $event)">{{:: 'add' | translate }}</md-button> -->
+        </div>
+        <div class="controls">
+            <div class="search">
+                <input placeholder="{{:: 'search' | translate }}" type="text" ng-model="search.query">
+                <i class="icon icon-search"></i>
+            </div>
+            <md-button class="md-primary md-raised" ng-click="clearSearch()">Clear</md-button>
+        </div>
+    </div>
+    <!-- <div class="dashboard-penal"> -->
+        <div>
+            <div class="table table-hover">
+                <!-- <div class="user-item">
+                    <div class="col-md-3" dir-paginate="allArtworks in artworks|itemsPerPage:20| filter:search.query" ng-show="allArtworks" style="margin-top: 10px;">
+                        <div class="img-wrapper">
+                            <img src="uploads/{{allArtworks.user_id}}/{{allArtworks.id}}/{{allArtworks.file_name}}" style="width: 232px;height: 265px;">
+                        </div>
+                        <!-- <div class="folder-icon"><i class="icon icon-folder-open"></i></div> -->
+                        <!--<div class="user-item-caption">
+                            <div class="name" style="text-align: center;">{{ allArtworks.name }}</div>
+                            <div class="align-left">
+                                <md-button class="md-primary md-raised" ng-click="showApprove(order, $event, allArtworks)">Approve</md-button>
+                            </div>
+                            <div class="align-right">
+                                <md-button class="md-primary md-raised" ng-click="showDeny(order, $event, allArtworks)">Deny</md-button>
+                                <!-- <button class="md-primary md-raised md-button md-default-theme">Edit</button> -->
+                            <!--</div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="user-items grid-view deselect-file">
+                    <div layout="row" layout-wrap  ng-show="artworks.length>0" >
+                        <div class="user-item" style="height: 280px;" dir-paginate="allArtworks in artworks|itemsPerPage:20| filter:search.query" ed-context-menu-item data-id="{{allArtworks.id }}">
+                            <div class="user-item-inner">
+                                <div class="img-wrapper">
+                                    <img ng-if="allArtworks.file_name" src="uploads/{{allArtworks.user_id}}/{{allArtworks.id}}/{{allArtworks.file_name}}" class="img">
+                                    <img ng-if="!allArtworks.file_name" src="assets/images/img/art.jpg" class="img">
+                                </div>
+                                <div class="user-item-caption">
+                                    <div class="name">{{ allArtworks.name }}</div>
+                                    <div class="size">
+                                        127 KB
+                                        <i ng-if="item.isFavorite" class="icon icon-star-filled"></i>
+                                    </div>
+                                    <div class="ago">
+                                       1 min ago
+                                       <div >
+                                       <div class="align-left" style="margin-top: 5px;">
+                                            <md-button class="md-primary md-raised" ng-click="showApprove(order, $event, allArtworks)">Approve</md-button>
+                                        </div>
+                                        <div class="align-right" style="margin-top: 5px;">
+                                            <md-button class="md-primary md-raised" ng-click="showDeny(order, $event, allArtworks)">Deny</md-button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul id="context-menu" ed-context-menu></ul>
+            </div>
+        </div>
+    <!-- </div> -->
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+<script type="text/ng-template" id="assets/views/modals/approve-artwork.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Approve Artwork' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="approveArtwork()">
+
+                    <div class="errors"></div>
+                    <h3>Are you sure you want this artwork to be approved to be sold?</h3>
+                    <md-input-container>
+                        <input id="approve_status" type="hidden" name="approve_status" value="1" ng-model="statusApproval.approve_status">
+                    </md-input-container>
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'No' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="assets/views/modals/deny-artwork.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Deny Artwork' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <form method="post" ng-submit="denyArtwork()">
+
+                    <div class="errors"></div>
+                    <h3>Are you sure you want to deny this piece of artwork?</h3>
+                    <md-input-container>
+                        <input id="approve_status" type="hidden" name="approve_status" value="2" ng-model="statusDenial.approve_status">
+                    </md-input-container>
+                    <input id="user_id" type="hidden" name="user_id" value="2" ng-model="statusDenial.user_id">
+                    <md-input-container>
+                        <label for="denial_reason">{{:: 'Reason for denial' | translate }}</label>
+                        <input id="denial_reason" type="text" name="denial_reason" rows="4" ng-model="statusDenial.denial_reason">
+                    </md-input-container>
+
+                    <div class="buttons">
+                        <md-button type="button" ng-click="users.closeModal()">{{:: 'No' | translate }}</md-button>
+                        <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button>
+                    </div>
+                </form>
+    </md-dialog>
+</script>

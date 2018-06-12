@@ -1,0 +1,71 @@
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="material-table" ng-controller="ImageUploadController" ng-class="{ loading: usersAjaxInProgress }">
+   <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <div class="controls" style="min-width: 400px;margin-top: -16px;">
+                <form method="post" class="ng-pristine ng-valid">
+                    <!-- <div style="float: left;width: 268px;">
+                        <input type="file" name="image" id="files" style="width: 100%;">
+                    </div> -->
+                    <md-button class="md-primary md-raised" style="margin-top: -20px;" ng-file-select ng-file-change="uploadImage($files)" ng-multiple="false">Upload</md-button>
+                </form>
+            </div>
+        </div>
+        <div class="controls">
+            <select ng-model="search.query" name="query" style="height: 100%;padding: 5px 15px 5px 15px;border-radius: 3px;font-size: 18px;line-height: normal;border: 1px solid #cacaca7a">
+                <option value="animals">Animals</option>
+                <option value="bubbles">Bubbles</option>
+                <option value="stars">Stars</option>
+                <option value="transportation">Transportation</option>
+                <option value="doodles">Doodles</option>
+                <option value="landmarks">Landmarks</option>
+                <option value="beach">Beach</option>
+                <option value="clouds">Clouds</option>                
+            </select>
+        </div>
+    </div>
+    <div class="table table-hover">
+        <div class="table-row table-head">
+            <div class="table-col image">{{:: 'S. No #' | translate }}</div>
+            <div class="table-col image">{{:: 'Image' | translate }}</div>
+            <div class="table-col">{{:: 'Category' | translate }}</div>
+            <div class="table-col">{{:: '' | translate }}</div>
+        </div>
+
+        <div class="table-body">
+            <div class="table-row" dir-paginate="row in categories | filter: search.query | itemsPerPage: itemsPerPage" current-page="currentPage" ng-class="{ selected: isItemSelected(user) }" ng-click="select(user)">
+                <div class="table-col image">{{$index+1}}</div>
+                <div class="table-col image"><img src="{{baseurl}}/assets/images/{{row.folder_name}}/{{row.image_name}}"></div>
+                <div class="table-col">{{row.category}}</div>
+                <div class="table-col align-right">
+                    <md-button class="md-primary md-raised" ng-click="removeSticker(row)">Remove</md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>

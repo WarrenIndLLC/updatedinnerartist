@@ -1,0 +1,104 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+
+.box-boddy {
+    padding: 15px;
+}
+.box-header {
+    border-bottom: 1px solid #ccc;
+    padding-left: 15px;
+    padding-bottom: 7px;
+}
+.box {
+    width: 100%;
+    float: left;
+    padding: 15px 0;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table-hover">
+        <div class="table table_content table-hover">
+            <div class="dashboard-penal">
+                <div class="dashboard-container">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-md-10 col-xs-12 col-sm-10">
+                                <input type="text" class="form-control" placeholder="eg. Search Username" ng-model="search.query">    
+                            </div>
+                            <div class="col-md-2 col-xs-12 col-sm-2">
+                                <!-- <div class="col-md-6"><md-button type="submit" class="md-primary md-raised" translate>Search</md-button></div> -->
+                                <div class="col-md-6"><md-button type="submit" class="md-primary md-raised" ng-click="clearSearch()">Clear</md-button></div>
+                            </div>
+                        </div>  
+                    </div>  
+                    <div class="col-md-12" style="margin-top: 10px;">
+                        <div class="row">
+                            <div class="col-md-6" ng-repeat="payments in vendor">
+                                <div class="box" >
+                                    <div class="box-header"><b>Username</b> :{{payments.paypal_account}} <div style="float: right;padding-right: 15px;"><b>Commission Owed:</b> :{{payments.total}}</div></div>
+                                    <div class="box-boddy">
+                                        <div class="col-md-7"><md-button type="submit" class="md-primary md-raised" ng-click="showInfo(payments)">Payment Information</md-button></div>
+                                        <div class="col-md-5" ng-if="payments.is_payment_release==0"><md-button type="submit" class="md-primary md-raised" >Mark as Paid</md-button></div>
+                                        <!-- ng-click="updateVendorPayment(payments)" -->
+                                        <div class="col-md-5" ng-if="payments.is_payment_release==1"><md-button type="submit" class="md-primary md-raised" disabled>Mark as Paid</md-button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
+<script type="text/ng-template" id="assets/views/modals/show-info.html">
+    <md-dialog class="md-modal md-modal-wide user-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'User Info' | translate }}</h1>
+            <div ng-click="users.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>  
+        <h5>User Name : </h5><p>{{payment.first_name}} {{payment.last_name}}</p>
+        <h5>Paypal Account: </h5> <p>{{payment.paypal_account}}</p>
+        <h5>Address:</h5> <p>{{payment.address}}</p>
+        <!-- <h5>Approval Status:</h5> <p ng-if="statusApproval.approval_status==0">Vendor Approval is Pending</p> -->
+
+        <div class="buttons">
+            <md-button type="button" ng-click="users.closeModal()">{{:: 'cancel' | translate }}</md-button>
+            <!-- <md-button type="submit" class="md-primary md-raised" translate>Yes</md-button> -->
+        </div>
+    </md-dialog>
+</script>

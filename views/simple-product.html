@@ -1,0 +1,13 @@
+<div class="col-lg-6">
+    <div class="single-product-details">
+        <h1>{{singleProduct.title}}</h1>
+        <h3>${{singleProduct.price}} / Base Cost</h3>
+        <p>{{singleProduct.custom_description}}</p>
+        <h5>You must have a piece of artwork selected and placed on this product to be able to add it to cart.</h5>
+        <a data-fancybox data-src="#artAdd" href="javascript:;" class="btn" ng-if="cartItem.length==0">find artwork</a>
+        <a data-fancybox data-src="" href="javascript:;" class="btn" ng-if="!cartItem.length==0">Place Art</a>
+        <!-- <a href class="btn" ng-if="singleProduct.addedTOCart" disabled>Add to Cart</a> -->
+        <a href class="btn" ng-click="productAddToCart(singleProduct);" ng-if="!singleProduct.addedTOCart" >Add to Cart</a>
+        <span ng-if="errorMsg && !selectedArt.id" class="arterror">{{errorMsg}}</span>
+    </div>    
+</div>

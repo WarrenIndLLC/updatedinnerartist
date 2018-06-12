@@ -1,0 +1,15 @@
+<script type="text/ng-template" id="assets/views/modals/sell-artwork.html">
+    <md-dialog class="md-modal move-photo-modal">
+        <div class="md-modal-header">
+            <h1>{{:: 'Art Added' | translate }}</h1>
+            <div ng-click="photos.closeModal()" class="md-close-modal"><i class="mdi mdi-close"></i></div>
+        </div>
+        <div>
+            <p>You are has been added to your Art Cart, you can now add additional pieces to your Art Cart if you'd like, or you can simply find a product to print your Artwork On.</p>
+        </div>
+        <div class="buttons">
+            <md-button ng-click="photos.closeModal()">{{:: 'cancel' | translate }}</md-button>
+            <md-button ng-click="photos.moveToFolder(selectedItem.get(), selectedFolder)" class="md-raised md-primary">{{:: 'Find Products' | translate }}</md-button>
+        </div>
+    </md-dialog>
+</script>

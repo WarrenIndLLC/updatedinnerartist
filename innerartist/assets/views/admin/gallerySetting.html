@@ -1,0 +1,48 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+/*button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+}*/
+.table_content{
+    text-align: right;float: right;margin: 0;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="header" ng-if="!selectedItems.length">
+        <div class="caption">
+            <!-- <md-button class="md-primary md-raised" ng-click="showUserModal(null, $event)">{{:: 'add' | translate }}</md-button> -->
+        </div>
+        <div class="controls">
+            <div class="search">
+                <!-- <input placeholder="{{:: 'search' | translate }}" type="text" ng-model="search.query">
+                <i class="icon icon-search"></i> -->
+            </div>
+        </div>
+    </div>
+    <div class="table table-hover">
+        <center><h1>Under Development</h1></center>
+    </div>
+    <div class="footer">
+        <section class="controls">
+            <div class="per-page">
+                {{:: 'rowsPerPage' | translate }}
+                <md-select ng-model="itemsPerPage">
+                    <md-option value="5">5</md-option>
+                    <md-option value="10">10</md-option>
+                    <md-option value="15">15</md-option>
+                    <md-option value="20">20</md-option>
+                    <md-option value="30">30</md-option>
+                    <md-option value="100">100</md-option>
+                </md-select>
+            </div>
+            <div class="meta">
+                1-{{ itemsPerPage }} {{ 'of' | translate }} {{ users.all.length }}
+            </div>
+            <dir-pagination-controls></dir-pagination-controls>
+        </section>
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>

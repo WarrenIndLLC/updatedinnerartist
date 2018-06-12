@@ -1,0 +1,73 @@
+<style>
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table_content table-hover">
+        <div class="dashboard-penal">
+            <div class="dashboard-title"><h2>Billing Address</h2></div>
+            <div class="dashboard-container">
+                <form method="post" ng-submit="billingSubmit()">
+
+                    <div class="errors"></div>
+                    <md-input-container>
+                        <label for="first_name">{{:: 'Your first name' | translate }}</label>
+                        <input id="first_name" type="text" name="first_name" ng-model="account.first_name">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="last_name">{{:: 'Your last name' | translate }}</label>
+                        <input id="last_name" type="text" name="last_name" ng-model="account.last_name">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="company">{{:: 'Your Company' | translate }}</label>
+                        <input id="company" type="text" name="company" ng-model="account.company">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="country">{{:: 'Your Country' | translate }}</label>
+                        <input id="country" type="text" name="country" ng-model="account.country">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="city">{{:: 'Your City' | translate }}</label>
+                        <input id="city" type="text" name="city" ng-model="account.city">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="state">{{:: 'Your State' | translate }}</label>
+                        <input id="state" type="text" name="state" ng-model="account.state">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="zip">{{:: 'Your zip' | translate }}</label>
+                        <input id="zip" type="text" name="zip" ng-model="account.zip">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="phone">{{:: 'Your Phone' | translate }}</label>
+                        <input id="phone" type="text" name="phone" ng-model="account.phone">
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="email">{{:: 'Your email address' | translate }}</label>
+                        <input id="email" type="email" name="email" ng-model="account.email" >
+                    </md-input-container>
+
+                    <md-input-container>
+                        <label for="address">{{:: 'Your address' | translate }}</label>
+                        <input id="address" type="text" name="address" ng-model="account.address">
+                    </md-input-container>
+
+                    <div class="buttons">
+                        <md-button type="submit" class="md-primary md-raised" translate>Update Address</md-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+</div>

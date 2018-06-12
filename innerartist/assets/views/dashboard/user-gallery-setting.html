@@ -1,0 +1,29 @@
+<style>
+.material-table .table .table-col{
+    height: auto;
+    padding: 2px;
+}
+button.md-primary.md-raised.md-button.md-default-theme {
+    margin-bottom: 2px;
+    margin-top: 4px;
+}
+.table_content{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+<div class="material-table" ng-controller="OrderController" ng-class="{ loading: usersAjaxInProgress }">
+    <div class="table table-hover" style="padding: 10px 30px 10px 30px;">        
+        <div class="dashboard-title"><h2>Gallery Setting</h2></div>
+        <div class="dashboard-container">
+            <p>Your account is not currently setup to sell artwork. Create a Vendor/Seller account today and profit!. The benefit will include:</p>
+            <div>
+                <p>80% Comission rate for Artwork You Create and sell your very gallery so user can see all you create more exposure for your artwork from normal user Get paid directly to your paypal account!</p>
+                <div class="buttons">
+                    <md-button type="submit" class="md-primary md-raised" translate>Apply Now</md-button>
+                </div> 
+            </div>      
+        </div> 
+    </div>
+    <md-progress-circular class="ajax-spinner" md-mode="indeterminate" ng-if="usersAjaxInProgress"></md-progress-circular>
+</div>
